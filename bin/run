@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+if [ $APP_ENV == "dev" ]; then
+  if [ ! -d ./node_modules ]; then
+    yarn install
+  fi
+  exec quasar dev -p 80
+else
+  if [ ! -f /usr/share/nginx/html/index.env.html ]; then
+    cp /usr/share/nginx/html/index.html /usr/share/nginx/html/index.env.html
+  fi
+
+  envsubst < "/code/nginx/default.conf" | tee > "/etc/nginx/conf.d/default.conf"
+  envsubst < "/usr/share/nginx/html/index.env.html" | tee > "/usr/share/nginx/html/index.html" 
+  exec nginx -g "daemon off;"
+fi
