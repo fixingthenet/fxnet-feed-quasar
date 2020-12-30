@@ -1,18 +1,18 @@
-const routes = [
+export default [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/MainLayout'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-    ],
+      { path: '', redirect: '/stories/new'},
+      { path: 'stories/:tab',
+        component: () => import('pages/stories') },
+      { path: 'feeds', component: () => import('pages/feeds') },
+      { path: 'feeds/add', component: () => import('pages/feedAdd') },
+    ]
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
-  {
+  { // Always leave this as last one
     path: '*',
-    component: () => import('pages/Error404.vue'),
-  },
-];
-
-export default routes;
+    component: () => import('pages/Error404')
+  }
+]
