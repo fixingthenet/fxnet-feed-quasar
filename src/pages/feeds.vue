@@ -2,8 +2,8 @@
   <q-page class="center">
    <q-infinite-scroll :handler="loadMore">
       <q-list>
-      <transition-group name="list" tag="div">
-        <p v-for="(feed,index) in feeds" v-bind:key="index" :id="index">
+      <transition-group key="list" tag="div">
+        <p v-for="(feed,index) in feeds" key="feed.id">
           <feed :feed="feed.node" v-on:deleted="onDeleted(index)"/>
         </p>
       </transition-group>

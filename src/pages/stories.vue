@@ -1,15 +1,13 @@
 <template>
   <q-page class="center">
-<q-tabs  class="float-left" v-model="currentTab">
-  <!-- Tabs - notice slot="title" -->
-      <q-route-tab default  to="/stories/new" slot="title" name="new" icon="today" />
-      <q-route-tab slot="title" to="/stories/all" name="all" icon="radio button checked"  />
-      <q-route-tab slot="title" to="/stories/bookmarked" name="bookmarked" icon="star rate" />
-    </q-tabs>
-<div class="tabs-button">
+   <q-tabs class="float-left" v-model="currentTab">
+     <q-route-tab default  to="/stories/new" class="text-white" icon="today"/>
+     <q-route-tab to="/stories/all" icon="checked"  class="text-white"/>
+     <q-route-tab to="/stories/bookmarked" icon="star"  class="text-white"/>
+   </q-tabs>
+    <div class="tabs-button">
       <q-btn flat big class="tabs-button" icon="cached" label="Reload"  @click="tabSelected" />
     </div>
-
 
    <q-infinite-scroll :offset=50 :handler="loadMore">
       <transition-group name="list" tag="div">
@@ -36,11 +34,6 @@ import Story from '../components/Story.vue';
 export default {
   name: 'PageIndex',
   components: {
-    QRouteTab,
-    QTabs,
-    QInfiniteScroll,
-    QChip,
-    QSpinnerDots,
     Story
   },
   data() {
@@ -83,6 +76,7 @@ export default {
 
     },
     loadMore(index,done) {
+      return
       console.log("loadMore: ", this.nextAfter, this.lastAfter);
       if (this.nextAfter != null && this.nextAfter == this.lastAfter) {
         if (done) {done()}

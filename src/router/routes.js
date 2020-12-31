@@ -5,8 +5,13 @@ export default [
     children: [
       { path: '', redirect: '/stories/new'},
       { path: 'stories/:tab',
-        component: () => import('pages/stories') },
-      { path: 'feeds', component: () => import('pages/feeds') },
+        component: () => import('pages/stories') ,
+        name: 'stories',
+      },
+      { path: 'feeds', 
+        name: 'feeds', 
+        component: () => import('pages/feeds') 
+      },
       { path: 'feeds/add', component: () => import('pages/feedAdd') },
     ]
   },

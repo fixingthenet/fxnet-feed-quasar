@@ -6,7 +6,7 @@ if [ $APP_ENV == "dev" ]; then
   if [ ! -d ./node_modules ]; then
     yarn install
   fi
-  exec quasar dev -p 80
+  exec quasar dev
 else
   if [ ! -f /usr/share/nginx/html/index.env.html ]; then
     cp /usr/share/nginx/html/index.html /usr/share/nginx/html/index.env.html
