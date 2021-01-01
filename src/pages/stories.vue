@@ -2,7 +2,7 @@
   <q-page class="center">
    <q-tabs class="float-left" v-model="currentTab">
      <q-route-tab default  to="/stories/new" class="text-white" icon="today"/>
-     <q-route-tab to="/stories/all" icon="checked"  class="text-white"/>
+     <q-route-tab to="/stories/all" icon="clear_all"  class="text-white"/>
      <q-route-tab to="/stories/bookmarked" icon="star"  class="text-white"/>
    </q-tabs>
     <div class="tabs-button">

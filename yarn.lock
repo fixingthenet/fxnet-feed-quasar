@@ -7812,6 +7812,11 @@ split-string@^3.0.1, split-string@^3.0.2:
   dependencies:
     extend-shallow "^3.0.0"
 
+spraypaint-vue@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/spraypaint-vue/-/spraypaint-vue-0.0.4.tgz#d9c3d0c5e7cc0cdce0976c9948779345c29199e9"
+  integrity sha512-68r7lk41vNxcqTMTbhaqOdhkzFbQl4tt8xXEehKAM2G53obKZKUZYwZxAJ0nkKyK7NX4TBv133XR1h7ZJkDHEw==
+
 spraypaint@^0.10.23:
   version "0.10.23"
   resolved "https://registry.yarnpkg.com/spraypaint/-/spraypaint-0.10.23.tgz#58907664d5970c759002c34edff9ab937b48a6d3"

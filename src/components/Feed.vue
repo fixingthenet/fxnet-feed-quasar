@@ -1,17 +1,17 @@
 <template>
-<q-item>
-<q-item-main>
-  <q-item-tile>
-    {{feed.name}}
-  </q-item-tile>
-  <q-item-tile>
-    {{feed.url}}
-  </q-item-tile>
-  </q-item-main>
-  <q-item-side right>
+<div>
+  <q-item-section>
+    <q-item-label>
+      {{feed.name}}
+    </q-item-label>
+    <q-item-label caption>
+      {{feed.url}}
+    </q-item-label>
+  </q-item-section>
+  <q-item-section side>
     <q-btn flat round v-on:click="deleteFeed" small><q-icon name="delete forever" /></q-btn>
-  </q-item-side>
-  </q-item>
+  </q-item-section>
+</div>
 </template>
 
 <script type="text/javascript">

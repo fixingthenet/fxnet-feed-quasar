@@ -1,12 +1,10 @@
 <template>
   <q-page class="center">
-   <q-infinite-scroll :handler="loadMore">
+   <q-infinite-scroll @load="loadMore" :offset="250">
       <q-list>
-      <transition-group key="list" tag="div">
-        <p v-for="(feed,index) in feeds" key="feed.id">
-          <feed :feed="feed.node" v-on:deleted="onDeleted(index)"/>
-        </p>
-      </transition-group>
+          <q-item v-for="(feed,index) in feeds" key="feed.id">
+            <feed :feed="feed" v-on:deleted="onDeleted(index)"/>
+          </q-item>
       </q-list>
       <q-spinner-dots slot="message" :size="40"></q-spinner-dots>
     </q-infinite-scroll>
@@ -21,6 +19,7 @@
 
 <script>
 import feed from '../components/Feed';
+import Feed from '../models/Feed';
 
 export default {
   components: {
@@ -39,7 +38,11 @@ export default {
     // last page: nextAfter == 0
     // any page: nextAfter == xxxxxx
 
-    loadMore(index,done) {
+    async loadMore(index,done) {
+      console.log("Loading more:",index)
+      var results = await Feed.page(index).per(25).all()
+      this.feeds = results.data
+      done()
     },
     onDeleted(index) {
 //      this.feeds.splice(index, 1)
