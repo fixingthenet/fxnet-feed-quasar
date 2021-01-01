@@ -1,23 +1,23 @@
 <template>
-<q-card>
-  <q-card-title>
+  <div>
+  <q-card-section>
 
-    <a :href="story.permalink" target="_feeder" v-on:click="markOpened">{{story.safeTitle}}</a> <br/>
+    <a :href="story.permalink" target="_feeder" v-on:click="markOpened">{{story.title}}</a> <br/>
     <div class="row">
-      <div class="feed col-9">{{story.feed.name}}</div>
+      <div class="feed col-9">{{story.feed_id}}</div>
       <div class="time col-3">{{publishedTime}}</div>
     </div>
-  </q-card-title>
-  <q-card-main>
-    {{shortened(story.safeBody,500)}}
+  </q-card-section>
+  <q-card-section>
+    {{shortened(story.body,500)}}
     <br/>
-    <span> {{moment(story.last_opened_at)}}- </span>
-  </q-card-main>
+    <span> {{moment(story.lastOpenedAt)}}- </span>
+  </q-card-section>
   <q-card-actions class="justify-end">
-    <q-btn round small :icon="openedIcon()" v-on:click="toggleOpened" />
-    <q-btn round small :icon="markedIcon()" v-on:click="toggleMarked" />
+    <q-btn round :icon="openedIcon()" v-on:click="toggleOpened" />
+    <q-btn round :icon="markedIcon()" v-on:click="toggleMarked" />
   </q-card-actions>
-</q-card>
+</div>
 </template>
 
 <script type="text/javascript">
@@ -59,7 +59,7 @@ export default {
       if (this.story.read_later_at) {
          return 'bookmark';
       } else {
-         return 'bookmark border';
+         return 'bookmark_border';
       }
     },
     openedIcon: function() {

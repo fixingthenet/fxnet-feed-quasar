@@ -1,9 +1,9 @@
 <template>
   <q-page class="center">
-   <q-infinite-scroll @load="loadMore" :offset="250">
+   <q-infinite-scroll @load="loadMore" :offset="50">
       <q-list>
           <q-item v-for="(feed,index) in feeds" key="feed.id">
-            <feed :feed="feed" v-on:deleted="onDeleted(index)"/>
+            <feed :feed="feed" v-on:deleted="onDeleted(feed.id)"/>
           </q-item>
       </q-list>
       <q-spinner-dots slot="message" :size="40"></q-spinner-dots>
@@ -18,8 +18,8 @@
 
 
 <script>
-import feed from '../components/Feed';
-import Feed from '../models/Feed';
+  import feed from '../components/Feed';
+  import Feed from '../models/Feed';
 
 export default {
   components: {

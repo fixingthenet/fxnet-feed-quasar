@@ -5,120 +5,90 @@
      <q-route-tab to="/stories/all" icon="clear_all"  class="text-white"/>
      <q-route-tab to="/stories/bookmarked" icon="star"  class="text-white"/>
    </q-tabs>
-    <div class="tabs-button">
-      <q-btn flat big class="tabs-button" icon="cached" label="Reload"  @click="tabSelected" />
-    </div>
-
-   <q-infinite-scroll :offset=50 :handler="loadMore">
-      <transition-group name="list" tag="div">
-        <div v-for="(story,index) in stories" v-bind:key="story.node.id" :id="index">
-        <story :story="story.node"
-        v-on:opened="onOpened(index)"
-        v-on:unbookmarked="onUnbookmarked(index)"
-        v-on:bookmarked="onBookmarked(index)"
-        />
-          </div>
-      <q-spinner-dots slot="message" :size="40"></q-spinner-dots>
-    </transition-group>
-</q-infinite-scroll>
-
+   <div class="tabs-button">
+     <q-btn flat big class="tabs-button" icon="cached" label="Reload"  @click="tabSelected" />
    </div>
+
+   <q-infinite-scroll @load="loadMore" :offset=50>
+     <q-card v-for="(story,index) in stories" :key="story.id">
+       <story :story="story"
+         v-on:opened="onOpened(index)"
+         v-on:unbookmarked="onUnbookmarked(index)"
+         v-on:bookmarked="onBookmarked(index)"
+       />
+     </q-card>
+     <q-spinner-dots slot="message" :size="40"></q-spinner-dots>
+   </q-infinite-scroll>
+
   </q-page>
 </template>
 
 
 <script>
+  import story from '../components/Story';
+  import Story from '../models/Story';
 
-import Story from '../components/Story.vue';
-
-export default {
-  name: 'PageIndex',
-  components: {
-    Story
-  },
-  data() {
-    return {
-      currentTab: this.$route.params.tab,
-      stories: [],
-      lastAfter:null,
-      nextAfter: null,
-    }
-  },
-  watch: {
-    '$route.params.tab'(to,from) {
-      this.tabSelected()
-    }
-  },
-  created() {
-//    this.tabSelected()
-  },
-  methods: {
-    onOpened(index) {
-      if (this.currentTab=='new') {
-        this.stories.splice(index, 1)
+  export default {
+    name: 'PageIndex',
+    components: {
+      story
+    },
+    data() {
+      return {
+        currentTab: this.$route.params.tab,
+        stories: [],
+        lastAfter:null,
+        nextAfter: null,
       }
     },
-    onBookmarked(index) {
-      if (this.currentTab=='new') {
-        this.stories.splice(index, 1)
+    watch: {
+      '$route.params.tab'(to,from) {
+        this.tabSelected()
       }
     },
-    onUnbookmarked(index) {
-      if (this.currentTab=='bookmarked') {
-        this.stories.splice(index, 1)
-      }
+    created() {
+      //    this.tabSelected()
     },
-    tabSelected() {
-      console.log("tab selected: ", this.$route.params.tab)
-      this.stories=[];
-      this.nextAfter=null;
-      this.loadMore();
-
-    },
-    loadMore(index,done) {
-      return
-      console.log("loadMore: ", this.nextAfter, this.lastAfter);
-      if (this.nextAfter != null && this.nextAfter == this.lastAfter) {
-        if (done) {done()}
-        return
-      }
-      this.lastAfter=this.nextAfter;
-      var newTab=this.$route.params.tab;
-      var filters={limit: 20,
-                   onlyUnread: false,
-                   onlyMarked: false,
-                   after:  this.nextAfter || ""
-                   }
-
-      if (newTab=='new') {
-        filters.onlyUnread=true
-      }
-      if (newTab=='bookmarked') {
-        filters.onlyMarked=true
-      }
-      rssFeederApi.stories(filters).
-      then((result) => {
-        console.log(result);
-        if (this.nextAfter==result.stories.pageInfo.endCursor) {
-        //ignore results
-          console.log("same endcursor");
-        } else  {
-          if (result.stories.pageInfo.hasNextPage) {
-            this.nextAfter=result.stories.pageInfo.endCursor;
-          }
-          this.stories=this.stories.concat(result.stories.edges);
+    methods: {
+      onOpened(index) {
+        if (this.currentTab=='new') {
+          this.stories.splice(index, 1)
         }
-        if (done) {done()}
+      },
+      onBookmarked(index) {
+        if (this.currentTab=='new') {
+          this.stories.splice(index, 1)
+        }
+      },
+      onUnbookmarked(index) {
+        if (this.currentTab=='bookmarked') {
+          this.stories.splice(index, 1)
+        }
+      },
+      tabSelected() {
+        console.log("tab selected: ", this.$route.params.tab)
+        this.stories=[];
+        this.nextAfter=null;
+        this.loadMore();
 
-      }).
-      catch( (e) => {
-        if (done) {done()}
-        console.log(e)
+      },
+      async loadMore(index,done) {
+        console.log("loadMore: ", index)
+        var currentTab=this.$route.params.tab;
+        var scope = Story.page(index||1).per(30)
+        if (currentTab=='new') {
+          scope = scope.where({unread: true})
+        }
+        if (currentTab=='bookmarked') {
+          scope = scope.where({bookmarked: true})
+        }
 
-      })
+        var results = await scope.all()
+        this.stories = results.data
+//        done()
+      }
     }
   }
-}
 </script>
 <style>
 .tabs-button {
