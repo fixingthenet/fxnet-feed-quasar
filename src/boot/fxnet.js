@@ -7,8 +7,9 @@ const {
 
 export default async ({store, Vue, router}) => {
   var config = Config.config;
+  console.log(config)
   // var res= await App.base()
-  //  console.log(res.data)
+
   //var fxnet= {backend: res.data.configuration, frontend: config}
 
   // store.commit('session/updateToken', ApplicationRecord.jwt)

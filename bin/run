@@ -2,6 +2,8 @@
 
 set -e
 
+envsubst < "/code/src/index.env.html" | tee > "/code/src/index.template.html"
+
 if [ $APP_ENV == "dev" ]; then
   if [ ! -d ./node_modules ]; then
     yarn install

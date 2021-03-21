@@ -1,7 +1,9 @@
 FROM node:13.8.0-stretch
 
+# gettext-base is for envsubst
 RUN apt update -y && \
     apt install -y \
+    gettext-base \
     nginx
 
 ADD .yarnrc /root/.yarnrc

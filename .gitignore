@@ -1,3 +1,6 @@
+src/index.template.html
+
+
 .DS_Store
 .thumbs.db
 node_modules
