@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div  style="width: 100%">
   <q-item-section>
     <q-item-label>
       {{feed.name}}
@@ -9,7 +9,11 @@
     </q-item-label>
   </q-item-section>
   <q-item-section side>
-    <q-btn flat round v-on:click="deleteFeed" small><q-icon name="delete forever" /></q-btn>
+    <q-badge outline align="middle" :color="feed.feedStatus.name">{{feed.feedStatus.name}}</q-badge>
+    {{feed.lastSuccessAt}}-{{feed.lastSuccessCount}}-{{feed.lastFailedAt}}-{{feed.lastFailedCount}}
+    </q-item-section>
+  <q-item-section side>
+    <q-btn round v-on:click="deleteFeed"><q-icon name="delete" /></q-btn>
   </q-item-section>
 </div>
 </template>

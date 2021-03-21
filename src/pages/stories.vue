@@ -6,10 +6,10 @@
      <q-route-tab to="/stories/bookmarked" icon="star"  class="text-white"/>
    </q-tabs>
    <div class="tabs-button">
-     <q-btn flat big class="tabs-button" icon="cached" label="Reload"  @click="tabSelected" />
+     <q-btn flat big class="tabs-button" icon="cached" @click="tabSelected" >
+     </q-btn>
    </div>
-
-   <q-infinite-scroll @load="loadMore" :offset=50>
+   <q-infinite-scroll ref="storiesScroll" @load="loadMore" :offset=50>
      <q-card v-for="(story,index) in stories" :key="story.id">
        <story :story="story"
          v-on:opened="onOpened(index)"
@@ -17,7 +17,7 @@
          v-on:bookmarked="onBookmarked(index)"
        />
      </q-card>
-     <q-spinner-dots slot="message" :size="40"></q-spinner-dots>
+     <q-spinner-dots :size="40"></q-spinner-dots>
    </q-infinite-scroll>
 
   </q-page>
@@ -68,14 +68,14 @@
       tabSelected() {
         console.log("tab selected: ", this.$route.params.tab)
         this.stories=[];
-        this.nextAfter=null;
+        this.$refs.storiesScroll.resume()
         this.loadMore();
 
       },
       async loadMore(index,done) {
         console.log("loadMore: ", index)
         var currentTab=this.$route.params.tab;
-        var scope = Story.page(index||1).per(30)
+        var scope = Story.page(index||1).per(30).order({published: 'desc'})
         if (currentTab=='new') {
           scope = scope.where({unread: true})
         }
@@ -84,26 +84,30 @@
         }
 
         var results = await scope.all()
-        this.stories = results.data
-//        done()
+        this.stories=this.stories.concat(results.data)
+        if (results.data.length == 0) {
+          this.$refs.storiesScroll.stop()
+        }
+
+        done()
       }
     }
   }
 </script>
 <style>
-.tabs-button {
-  background: #027be3;
-  min-height: 55px;
-  color: #fff;
-}
+  .tabs-button {
+    background: #027be3;
+    min-height: 55px;
+    color: #fff;
+  }
 
-.list-enter-active, .list-leave-active {
-  transition: all 1s;
-}
-/*.list-enter,*/
-.list-leave-to /* .list-leave-active below version 2.1.8 */ {
-  opacity: 0;
-  transform: translateX(100px) /*scale(1,0);*/
-}
+  .list-enter-active, .list-leave-active {
+    transition: all 1s;
+  }
+  /*.list-enter,*/
+  .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    transform: translateX(100px) /*scale(1,0);*/
+  }
 
 </style>

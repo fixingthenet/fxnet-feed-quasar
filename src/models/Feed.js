@@ -15,5 +15,6 @@ export default Base.extend({
     lastSuccessCount: attr(),
     lastFailedCount: attr(),
     lastFailedAt: attr(),
+    feedStatus: belongsTo(),
   }
 })
