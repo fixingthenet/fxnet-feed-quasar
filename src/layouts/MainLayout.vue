@@ -12,10 +12,14 @@
         />
 
         <q-toolbar-title>
-          Fxnet RSS reader
+          Feed reader
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+         {{ session.session.name() }}
+        </div>
+        <q-btn flat>
+          <q-icon name='logout' @click="logout" />
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -35,17 +39,29 @@
 </template>
 
 <script>
-import Sidebar from 'components/Sidebar';
+  import Sidebar from 'components/Sidebar';
 
-export default {
-  name: 'MainLayout',
-  components: { 
-    Sidebar
-  },
-  data() {
-    return {
-      leftDrawerOpen: false,
-    };
-  },
-};
+  export default {
+    name: 'MainLayout',
+    components: {
+      Sidebar
+    },
+    computed: {
+      session() {
+        return this.$store.state.session
+      }
+    },
+    data() {
+      return {
+        leftDrawerOpen: false,
+      };
+    },
+    methods: {
+      async logout() {
+        await this.$router.fxnet.securityMgr.signOut()
+        window.location='/' //ugly but works
+      }
+    },
+
+  };
 </script>

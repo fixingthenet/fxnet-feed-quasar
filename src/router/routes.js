@@ -8,11 +8,12 @@ export default [
         component: () => import('pages/stories') ,
         name: 'stories',
       },
-      { path: 'feeds', 
-        name: 'feeds', 
-        component: () => import('pages/feeds') 
+      { path: 'feeds',
+        name: 'feeds',
+        component: () => import('pages/feeds')
       },
       { path: 'feeds/add', component: () => import('pages/feedAdd') },
+      { path: 'oidc/callback', component: () => import('pages/oidcCallback') , meta: {public: true}},
     ]
   },
 

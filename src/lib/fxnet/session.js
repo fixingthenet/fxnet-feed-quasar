@@ -52,8 +52,8 @@ class Session {
     return this.decoded.data.user_id
   }
 
-  login() {
-    return this.decoded.data.login
+  name() {
+    return this.decoded.name
   }
 
   timeLeftString() {
