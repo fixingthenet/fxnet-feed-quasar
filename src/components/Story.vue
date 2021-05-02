@@ -56,66 +56,46 @@ export default {
       }
     },
     markedIcon: function() {
-      if (this.story.read_later_at) {
+      if (this.story.readLaterAt) {
          return 'bookmark';
       } else {
          return 'bookmark_border';
       }
     },
     openedIcon: function() {
-      if (this.story.last_opened_at) {
+      if (this.story.lastOpenedAt) {
          return 'done';
       } else {
          return '';
       }
     },
-    toggleOpened(event, done) {
+    async toggleOpened(event, done) {
      console.log("toggle opened");
-     if (this.story.last_opened_at) {
-        rssApi.unopenStory({storyId: this.story.id}).
-        then((result)=> {
-          this.story.last_opened_at = null
-        }).
-        catch((e) =>{});
-        this.$emit('unopened');
+     if (this.story.lastOpenedAt) {
+       this.story.lastOpenedAt=null
+       await this.story.save()
+       this.$emit('unopened');
      } else {
-       this.markOpened()
+       await this.markOpened()
       }
     },
-    markOpened: function(event, done) {
+
+    async markOpened(event, done) {
       console.log("mark opened");
-      rssApi.openStory({storyId: this.story.id}).
-        then((result)=> {
-//          console.log("result: ",
-//          result.openStory.last_opened_at,
-//          this.story.id
-//          );
-          this.story.last_opened_at = result.openStory.last_opened_at
-        }).
-        catch((e) =>{
-          console.log("error", e)
-        });
+      this.story.lastOpenedAt=new Date()
+      await this.story.save()
       this.$emit('opened');
     },
-    toggleMarked(event, done) {
+
+    async toggleMarked(event, done) {
       console.log("toggle marked");
-      if (this.story.read_later_at)  {
-        rssApi.unbookmarkStory({storyId: this.story.id}).
-        then((result)=> {
-          this.story.read_later_at = null
-        }).
-        catch((e) =>{});
+      if (this.story.readLaterAt)  {
+        this.story.readLaterAt=null
+        await this.story.save()
         this.$emit('unbookmarked');
-     } else {
-        rssApi.bookmarkStory({storyId: this.story.id}).
-        then((result)=> {
-          console.log("result: ",
-          result.bookmarkStory.read_later_at,
-          this.story.id
-          );
-          this.story.read_later_at = result.bookmarkStory.read_later_at
-        }).
-        catch((e) =>{});
+      } else {
+        this.story.readLaterAt=new Date()
+        await this.story.save()
         this.$emit('bookmarked');
       }
     },

@@ -2,16 +2,21 @@
 //import {App, ApplicationRecord} from '../lib/auth_api';
 import Config from '../lib/fxnet/config';
 import SecurityMgr from '../lib/fxnet/SecurityMgr'
+import AppConfiguration from '../models/AppConfiguration'
+import BaseModel from '../models/Base'
 
-
-
-const {
-  SpraypaintBase
-} = require("spraypaint/dist/spraypaint")
+const {SpraypaintBase,MiddlewareStack} = require("spraypaint/dist/spraypaint")
 
 export default async ({store, Vue, router}) => {
   var config = Config.config;
-  var securityMgr = new SecurityMgr(store)
+  var appConfiguration = (await AppConfiguration.find(config.app_configuration_identifier)).data
+  console.log("Fxnet Boot", appConfiguration)
+
+  var securityMgr = new SecurityMgr(store, {
+    authority: appConfiguration.configuration.oidc_issuer,
+    client_id: appConfiguration.configuration.oidc_client_id,
+    scope: appConfiguration.configuration.oidc_scopes,
+  })
   console.log(config)
   // var res= await App.base()
 
@@ -24,7 +29,6 @@ export default async ({store, Vue, router}) => {
   //convinience:
   //Vue.prototype.$fxnet = fxnet
   router.fxnet=fxnet;
-
 
   router.beforeEach( (to, from, next) => {
     if (to.meta.public)  {
@@ -43,30 +47,24 @@ export default async ({store, Vue, router}) => {
     }
   })
 
-
-
-
-
-
-
-}
-
   //var MiddlewareStack = spraypaint.MiddlewareStack;
-  //var middleware = new MiddlewareStack();
-  //var middleware = ApplicationRecord.middlewareStack
+  var middlewareStack = new MiddlewareStack();
+  BaseModel.middlewareStack = middlewareStack
+  middlewareStack.afterFilters.push(function(response, json) {
+    //console.log("debugging:", response, response.status,json)
+    if (response.status === 401) {
+      store.commit('session/logout');
+      securityMgr.signIn()
+    }
+  });
 
 /*
   middleware.afterFilters.push(function(response, json) {
-    console.log("debugging:", response, response.status,json)
+
     console.log("debugging:", response.headers['Location'], response.redirected)
   });
 */
-/*  middleware.afterFilters.push(function(response, json) {
-    if (response.status === 401) {
-      store.commit('session/logout');
-      window.location.href = "/login";
-      throw("abort");
-    }
-  });
-*/
+
+
 //  console.log("Middleware",middleware)
+}

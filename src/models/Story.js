@@ -14,6 +14,8 @@ export default Base.extend({
     published: attr(),
     createdAt: attr(),
     updatedAt: attr(),
-//    feed: belongsTo()
+    readLaterAt: attr(),
+    lastOpenedAt: attr(),
+    feed: belongsTo(),
   }
 })

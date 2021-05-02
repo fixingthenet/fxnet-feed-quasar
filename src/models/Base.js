@@ -8,13 +8,4 @@ const Base = SpraypaintBase.extend({
   },
 })
 
-const middleware = new MiddlewareStack()
-middleware.beforeFilters.push((url, options) => {
-//  const apiKey = Vue.spraypaintConfig.config.store.getters.user.api_key
-//  const encodedApiKey = btoa(`api_key:${apiKey}`)
-//  options.headers.Authorization = `Basic ${encodedApiKey}`
-})
-
-Base.middlewareStack = middleware
-
 export default Base

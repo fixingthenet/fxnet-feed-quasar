@@ -75,7 +75,7 @@
       async loadMore(index,done) {
         console.log("loadMore: ", index)
         var currentTab=this.$route.params.tab
-        var scope = Story.page(index||1).per(30).order({published: 'desc'})
+        var scope = Story.page(index||1).per(30)
         if (currentTab=='new') {
           scope = scope.where({unread: true})
         }
@@ -111,6 +111,3 @@
   }
 
 </style>
-"973242bd6ec04e2504580bd1cca4a7cb", secret: "1193658660a24d86193c1340c8f508e55aa76c8dbb69b4ad4d...", name: "rss-reader", jwks_uri: nil, sector_identifier: nil, redirect_uris: ["https://rss-reader.dev.fixingthe.net/ep/oidc/callback"], dynamic: false, native: true, ppid: true, expires_at: nil, raw_registered_json: nil, created_at: "2021-03-22 21:09:56", updated_at: "2021-03-22 21:09:56", pwa_manifest: {}, fxnet_manifest: {}, configuration: {}>
-irb(main):004:0> c.secret
-=> "1193658660a24d86193c1340c8f508e55aa76c8dbb69b4ad4d87c4bb41f36be2"
