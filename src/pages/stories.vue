@@ -19,7 +19,7 @@
        />
      </q-card>
 </transition-group>
-     <q-spinner-dots :size="40"></q-spinner-dots>
+<q-spinner-dots :size="40"></q-spinner-dots>
    </q-infinite-scroll>
 
   </q-page>
@@ -29,6 +29,8 @@
 <script>
   import story from '../components/Story';
   import Story from '../models/Story'
+  import Feed from '../models/Feed'
+
   export default {
     name: 'PageIndex',
     components: {
@@ -56,7 +58,7 @@
         console.debug("onOpened:",index,this.stories.length, this.currentTab,this.$route.params.tab)
         if (this.currentTab=='new') {
           this.stories.splice(index, 1)
-//          this.$delete(this.stories,index)
+          //          this.$delete(this.stories,index)
           console.log("onOpened:", this.stories.length)
         }
       },
@@ -79,7 +81,8 @@
       },
       async loadMore(index,done) {
         console.log("loadMore: ", index, this.currentTab)
-        var scope = Story.page(index||1).per(30)
+        var scope = Story.page(index||1).per(30).includes('feed')
+
         if (this.currentTab=='new') {
           scope = scope.where({unread: true, bookmarked: false})
         }

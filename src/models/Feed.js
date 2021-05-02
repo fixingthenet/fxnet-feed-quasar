@@ -1,5 +1,6 @@
 import { attr, belongsTo } from 'spraypaint'
 import Base from './Base'
+import moment from 'moment'
 
 export default Base.extend({
   static: {
@@ -16,5 +17,11 @@ export default Base.extend({
     lastFailedCount: attr(),
     lastFailedAt: attr(),
     feedStatus: belongsTo(),
+  },
+  methods: {
+    lastSuccessAtHr() {
+      return moment(this.lastSuccessAt)
+    }
+
   }
 })

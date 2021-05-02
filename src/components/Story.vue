@@ -1,17 +1,16 @@
 <template>
   <div>
   <q-card-section>
-
     <a :href="story.permalink" target="_feeder" v-on:click="markOpened">{{story.title}}</a> <br/>
     <div class="row">
       <div class="feed col-9">{{story.feed_id}}</div>
-      <div class="time col-3">{{publishedTime}}</div>
+      <div class="time col-3">{{$d(new Date(story.published), 'shortTime')}}</div>
     </div>
   </q-card-section>
   <q-card-section>
     {{shortened(story.body,500)}}
     <br/>
-    <span> {{moment(story.lastOpenedAt)}}- </span>
+    <span> {{moment(story.lastOpenedAtHr())}}</span> | <span>{{story.feed.name}}</span>
   </q-card-section>
   <q-card-actions class="justify-end">
     <q-btn round :icon="openedIcon()" v-on:click="toggleOpened" />
@@ -34,10 +33,6 @@ export default {
     }
   },
   computed: {
-    publishedTime() {
-      var t=new Date(this.story.published);
-      return `${t.getDate()}.${t.getMonth()+1}.${t.getFullYear()} ${t.getHours()}:${t.getMinutes()}`
-    }
   },
   methods: {
     shortened(sth,lth) {

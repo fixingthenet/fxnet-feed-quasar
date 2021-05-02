@@ -10,7 +10,7 @@
   </q-item-section>
   <q-item-section side>
     <q-badge outline align="middle" :color="feed.feedStatus.name">{{feed.feedStatus.name}}</q-badge>
-    {{feed.lastSuccessAt}}-{{feed.lastSuccessCount}}-{{feed.lastFailedAt}}-{{feed.lastFailedCount}}
+    last successfull fetch:{{feed.lastSuccessAtHr()}} successfull matches since last fail: {{feed.lastSuccessCount}} last failed match: {{feed.lastFailedAt}} failed matches since last success: {{feed.lastFailedCount}}
     </q-item-section>
   <q-item-section side>
     <q-btn round v-on:click="deleteFeed"><q-icon name="delete" /></q-btn>

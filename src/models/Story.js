@@ -1,5 +1,7 @@
 import { attr, belongsTo } from 'spraypaint'
 import Base from './Base'
+import moment from 'moment'
+
 
 export default Base.extend({
   static: {
@@ -17,5 +19,15 @@ export default Base.extend({
     readLaterAt: attr(),
     lastOpenedAt: attr(),
     feed: belongsTo(),
+  },
+  methods: {
+    lastOpenedAtHr() {
+      if (this.lastOpenedAt) {
+        return moment(this.lastOpenedAt)
+      } else {
+        return '-'
+      }
+
+    }
   }
 })
