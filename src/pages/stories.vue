@@ -1,15 +1,16 @@
 <template>
   <q-page class="center">
-   <q-tabs class="float-left" v-model="currentTab">
-     <q-route-tab default  to="/stories/new" class="text-white" icon="today"/>
-     <q-route-tab to="/stories/all" icon="clear_all"  class="text-white"/>
-     <q-route-tab to="/stories/bookmarked" icon="star"  class="text-white"/>
+    <q-tabs class="float-left" v-model="currentTab">
+      <q-route-tab name="new" default  to="/stories/new"  class="text-white" icon="today"/>
+     <q-route-tab name="all" to="/stories/all" icon="clear_all"  class="text-white"/>
+     <q-route-tab name="bookmarked" to="/stories/bookmarked" icon="star"  class="text-white"/>
    </q-tabs>
    <div class="tabs-button">
      <q-btn flat big class="tabs-button" icon="cached" @click="tabSelected" >
      </q-btn>
    </div>
    <q-infinite-scroll ref="storiesScroll" @load="loadMore" :offset=50>
+     <transition-group appear leave-active-class="animated fadeOutRight" :duration="500">
      <q-card v-for="(story,index) in stories" :key="story.id">
        <story :story="story"
          v-on:opened="onOpened(index)"
@@ -17,6 +18,7 @@
          v-on:bookmarked="onBookmarked(index)"
        />
      </q-card>
+</transition-group>
      <q-spinner-dots :size="40"></q-spinner-dots>
    </q-infinite-scroll>
 
@@ -26,8 +28,7 @@
 
 <script>
   import story from '../components/Story';
-  import Story from '../models/Story';
-
+  import Story from '../models/Story'
   export default {
     name: 'PageIndex',
     components: {
@@ -35,7 +36,7 @@
     },
     data() {
       return {
-        currentTab: this.$route.params.tab,
+        currentTab: null,
         stories: [],
         lastAfter:null,
         nextAfter: null,
@@ -47,12 +48,16 @@
       }
     },
     created() {
-      //    this.tabSelected()
+      this.currentTab=this.$route.params.tab
     },
     methods: {
       onOpened(index) {
+
+        console.debug("onOpened:",index,this.stories.length, this.currentTab,this.$route.params.tab)
         if (this.currentTab=='new') {
           this.stories.splice(index, 1)
+//          this.$delete(this.stories,index)
+          console.log("onOpened:", this.stories.length)
         }
       },
       onBookmarked(index) {
@@ -67,19 +72,18 @@
       },
       tabSelected() {
         console.log("tab selected: ", this.$route.params.tab)
+        this.currentTab=this.$route.params.tab
         this.stories=[];
         this.$refs.storiesScroll.resume()
         this.loadMore();
-
       },
       async loadMore(index,done) {
-        console.log("loadMore: ", index)
-        var currentTab=this.$route.params.tab
+        console.log("loadMore: ", index, this.currentTab)
         var scope = Story.page(index||1).per(30)
-        if (currentTab=='new') {
-          scope = scope.where({unread: true})
+        if (this.currentTab=='new') {
+          scope = scope.where({unread: true, bookmarked: false})
         }
-        if (currentTab=='bookmarked') {
+        if (this.currentTab=='bookmarked') {
           scope = scope.where({bookmarked: true})
         }
 
