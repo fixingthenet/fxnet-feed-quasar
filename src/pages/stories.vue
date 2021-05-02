@@ -10,7 +10,7 @@
      </q-btn>
    </div>
    <q-infinite-scroll ref="storiesScroll" @load="loadMore" :offset=50>
-     <transition-group appear leave-active-class="animated fadeOutRight" :duration="500">
+     <transition-group appear leave-active-class="animated fadeOutRight" :duration="800">
      <q-card v-for="(story,index) in stories" :key="story.id">
        <story :story="story"
          v-on:opened="onOpened(index)"

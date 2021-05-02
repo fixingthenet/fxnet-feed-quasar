@@ -10,7 +10,7 @@
   <q-card-section>
     {{shortened(story.body,500)}}
     <br/>
-    <span> {{moment(story.lastOpenedAtHr())}}</span> | <span>{{story.feed.name}}</span>
+    <span> <q-icon :name="viewed(story.lastOpenedAt)" />{{moment(story.lastOpenedAt)}}</span> | <span>{{story.feed.name}}</span>
   </q-card-section>
   <q-card-actions class="justify-end">
     <q-btn round :icon="openedIcon()" v-on:click="toggleOpened" />
@@ -23,26 +23,33 @@
 import mmt from 'moment';
 
 export default {
-  data() {
-    return {}
-  },
-  props: {
-    story: {
-      required: true,
-      type: Object
-    }
-  },
-  computed: {
-  },
-  methods: {
-    shortened(sth,lth) {
-      if (sth && sth.slice) {
-        return sth.slice(0,lth)
-      } else {
-        return ''
+    data() {
+      return {}
+    },
+    props: {
+      story: {
+        required: true,
+        type: Object
       }
     },
+    computed: {
+    },
+    methods: {
 
+      shortened(sth,lth) {
+        if (sth && sth.slice) {
+          return sth.slice(0,lth)
+        } else {
+          return ''
+        }
+      },
+      viewed(time) {
+        if (!time) {
+          return 'visibility_off'
+        } else {
+          return 'visibility'
+        }
+      },
     moment(arg) {
       if (arg) {
         return mmt(Date.parse(arg)).fromNow()

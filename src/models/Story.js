@@ -21,13 +21,6 @@ export default Base.extend({
     feed: belongsTo(),
   },
   methods: {
-    lastOpenedAtHr() {
-      if (this.lastOpenedAt) {
-        return moment(this.lastOpenedAt)
-      } else {
-        return '-'
-      }
 
-    }
   }
 })

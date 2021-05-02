@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-
 import appI18n from 'src/i18n'
+import moment from 'moment'
 
 Vue.use(VueI18n)
 
-
+moment.locale('en')
 const i18n = new VueI18n({
   locale: 'en',
   fallbackLocale: 'en',
