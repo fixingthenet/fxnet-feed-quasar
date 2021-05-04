@@ -1,4 +1,4 @@
-import { attr, belongsTo } from 'spraypaint'
+import { attr, belongsTo, hasOne } from 'spraypaint'
 import Base from './Base'
 import moment from 'moment'
 
@@ -16,7 +16,9 @@ export default Base.extend({
     lastSuccessCount: attr(),
     lastFailedCount: attr(),
     lastFailedAt: attr(),
+    feedSubscriptionsCount: attr(),
     feedStatus: belongsTo(),
+    userSubscription: hasOne('feed_subscriptions'),
   },
   methods: {
     lastSuccessAtHr() {

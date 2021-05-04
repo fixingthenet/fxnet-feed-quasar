@@ -10,15 +10,15 @@
      </q-btn>
    </div>
    <q-infinite-scroll ref="storiesScroll" @load="loadMore" :offset=50>
-     <transition-group appear leave-active-class="animated fadeOutRight" :duration="800">
-     <q-card v-for="(story,index) in stories" :key="story.id">
-       <story :story="story"
-         v-on:opened="onOpened(index)"
-         v-on:unbookmarked="onUnbookmarked(index)"
-         v-on:bookmarked="onBookmarked(index)"
-       />
-     </q-card>
-</transition-group>
+     <transition-group enter-active-cless="animated tada" leave-active-class="animated fadeOutRight" :duration="{ leave: 500 }">
+       <q-card v-for="(story,index) in stories" :key="story.id">
+         <story :story="story"
+           v-on:opened="onOpened(index)"
+           v-on:unbookmarked="onUnbookmarked(index)"
+           v-on:bookmarked="onBookmarked(index)"
+         />
+       </q-card>
+     </transition-group>
 <q-spinner-dots :size="40"></q-spinner-dots>
    </q-infinite-scroll>
 

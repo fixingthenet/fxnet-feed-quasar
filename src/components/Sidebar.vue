@@ -25,8 +25,8 @@
     data() {
       return {
         sections: [
-          { title: 'Storries', route: {name: 'stories', params: { tab: 'new'}}, icon: 'chat' },
-          { title: 'Feeds', route: {name: 'feeds'}, icon: 'rss feed' },
+          { title: 'Storries', route: {name: 'stories', params: { tab: 'new'}}, icon: 'message' },
+          { title: 'Feeds', route: {name: 'feeds'}, icon: 'feed' },
         ],
       };
     },
