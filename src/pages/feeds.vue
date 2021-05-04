@@ -1,8 +1,8 @@
 <template>
   <q-page class="center">
     <q-infinite-scroll ref="feedsScroll" @load="loadMore" :offset="50">
-      <q-card v-for="(feed,index) in feeds" key="feed.id">
-        <feed :feed="feed" v-on:deleted="onDeleted(feed.id)"/>
+      <q-card v-for="(feed,index) in feeds" :key="feed.id">
+        <feed :feed="feed""/>
       </q-card>
     </q-infinite-scroll>
     <q-spinner-dots slot="message" :size="40"></q-spinner-dots>
